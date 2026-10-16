@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Laddu AI — Next-Gen Neural Ecosystem</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Marked.js for Markdown parsing -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    code, pre, .font-mono { font-family: 'JetBrains Mono', monospace; }
+
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #090807; }
+    ::-webkit-scrollbar-thumb { background: #44403c; border-radius: 99px; }
+    ::-webkit-scrollbar-thumb:hover { background: #f59e0b; }
+
+    .glass-card {
+      background: rgba(24, 21, 19, 0.78);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(245, 158, 11, 0.18);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.45);
+    }
+    .glass-card:hover {
+      border-color: rgba(245, 158, 11, 0.4);
+    }
+    .gold-gradient-text {
+      background: linear-gradient(135deg, #fde68a 0%, #f59e0b 50%, #ea580c 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .code-container { position: relative; margin: 12px 0; }
+    .copy-code-btn {
+      position: absolute; top: 8px; right: 8px;
+      background: rgba(28, 25, 23, 0.9); color: #fbbf24;
+      border: 1px solid #57534e; padding: 4px 10px; border-radius: 6px;
+      font-size: 11px; cursor: pointer; transition: all 0.2s;
+    }
+    .copy-code-btn:hover { background: #f59e0b; color: #090807; font-weight: 600; }
+
+    .prose pre { background: #141210; padding: 16px; border-radius: 10px; overflow-x: auto; margin: 0; border: 1px solid #292524; }
+    .prose code { color: #fbbf24; font-size: 0.85rem; }
+    .prose ul { list-style-type: disc; padding-left: 20px; margin: 8px 0; }
+    .prose ol { list-style-type: decimal; padding-left: 20px; margin: 8px 0; }
+    .prose table { width: 100%; border-collapse: collapse; margin: 12px 0; }
+    .prose th, .prose td { border: 1px solid #292524; padding: 8px 12px; text-align: left; }
+    .prose th { background: #1c1917; color: #fbbf24; }
+
+    @keyframes floatSlow {
+      0%, 100% { transform: translateY(0px) scale(1); }
+      50% { transform: translateY(-8px) scale(1.03); }
+    }
+    .float-anim { animation: floatSlow 6s ease-in-out infinite; }
+  </style>
+</head>
+<body class="bg-[#090807] text-stone-100 flex h-screen overflow-hidden relative selection:bg-amber-500 selection:text-stone-950">
+
+  <!-- Ambient Cyberpunk Saffron Glows -->
+  <div class="absolute -top-24 -left-24 w-96 h-96 bg-amber-500/15 rounded-full blur-[120px] pointer-events-none"></div>
+  <div class="absolute bottom-0 right-10 w-[28rem] h-[28rem] bg-orange-600/10 rounded-full blur-[130px] pointer-events-none"></div>
+
+  <!-- Left Navigation Sidebar -->
+  <aside class="w-72 bg-stone-950/90 backdrop-blur-2xl border-r border-amber-500/15 flex flex-col justify-between hidden lg:flex z-20">
+    <div>
+      <div class="p-6 border-b border-stone-800/80 flex items-center gap-3.5">
+        <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-orange-600 via-amber-500 to-yellow-300 flex items-center justify-center text-2xl shadow-lg shadow-amber-500/30 border border-amber-200/40 float-anim">
+          🟠
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <h1 class="text-xl font-extrabold tracking-tight gold-gradient-text">Laddu AI</h1>
+            <span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30">PRO v3.5</span>
+          </div>
+          <p class="text-xs text-stone-400 mt-0.5">Self-Healing Neural Core</p>
+        </div>
+      </div>
+
+      <div class="p-4 space-y-1.5">
+        <p class="px-3 text-[10px] font-bold uppercase tracking-wider text-stone-500 mb-2">Core Modules</p>
+        <button onclick="switchTab('overview')" id="nav-overview" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold bg-gradient-to-r from-amber-500/20 to-orange-500/5 text-amber-400 border border-amber-500/30 transition">
+          <span>🌐</span> AI Architecture & Info
+        </button>
+        <button onclick="switchTab('chat')" id="nav-chat" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold text-stone-400 hover:text-stone-100 hover:bg-stone-900/60 transition">
+          <span>⚡</span> Neural Chat Workspace
+        </button>
+        <button onclick="switchTab('capabilities')" id="nav-capabilities" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold text-stone-400 hover:text-stone-100 hover:bg-stone-900/60 transition">
+          <span>🚀</span> Benchmarks vs Nexora
+        </button>
+        <button onclick="switchTab('playground')" id="nav-playground" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold text-stone-400 hover:text-stone-100 hover:bg-stone-900/60 transition">
+          <span>💻</span> Code & Task Hub
+        </button>
+      </div>
+
+      <div class="px-4 mt-2">
+        <div class="glass-card rounded-2xl p-4 space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold text-amber-400">🧠 Neural Engine Specs</span>
+            <span class="text-[10px] bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded-full border border-emerald-500/30">Online</span>
+          </div>
+          <div class="space-y-1.5 text-xs">
+            <div class="flex justify-between text-stone-400"><span>Active Model:</span><span id="active-model-badge" class="text-amber-300 font-mono text-[11px]">Auto-Detect</span></div>
+            <div class="flex justify-between text-stone-400"><span>Context Window:</span><span class="text-stone-200 font-mono">1M+ Tokens</span></div>
+            <div class="flex justify-between text-stone-400"><span>Modalities:</span><span class="text-stone-200">Text, Code, Vision</span></div>
+            <div class="flex justify-between text-stone-400"><span>Response Speed:</span><span id="sidebar-latency" class="text-emerald-400 font-mono">~150 ms</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="p-4 border-t border-stone-800/80 space-y-2">
+      <button onclick="openKeyModal()" class="w-full py-2.5 px-4 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-stone-950 font-bold rounded-xl text-xs transition shadow-lg shadow-amber-500/20 flex items-center justify-center gap-2">
+        🔑 Setup / Change API Key
+      </button>
+      <p class="text-[10px] text-center text-stone-500">Auto-discovers your key's unlocked models</p>
+    </div>
+  </aside>
+
+  <!-- Main Content Area -->
+  <main class="flex-1 flex flex-col h-screen z-10 overflow-hidden">
+
+    <!-- Top Header Bar -->
+    <header class="bg-stone-950/85 backdrop-blur-md border-b border-stone-800/80 px-4 sm:px-6 py-3 flex flex-wrap justify-between items-center gap-2">
+      <div class="flex items-center gap-2">
+        <!-- Mobile Navigation Buttons -->
+        <div class="flex lg:hidden gap-1.5">
+          <button onclick="switchTab('overview')" class="px-2.5 py-1.5 bg-stone-900 rounded-lg text-xs text-amber-400 border border-stone-800 font-semibold">🌐 Info</button>
+          <button onclick="switchTab('chat')" class="px-2.5 py-1.5 bg-stone-900 rounded-lg text-xs text-stone-200 border border-stone-800 font-semibold">⚡ Chat</button>
+          <button onclick="switchTab('capabilities')" class="px-2.5 py-1.5 bg-stone-900 rounded-lg text-xs text-stone-200 border border-stone-800 font-semibold">🚀 Specs</button>
+          <button onclick="switchTab('playground')" class="px-2.5 py-1.5 bg-stone-900 rounded-lg text-xs text-stone-200 border border-stone-800 font-semibold">💻 Hub</button>
+        </div>
+        <h2 id="current-page-title" class="hidden sm:flex text-sm md:text-base font-bold text-stone-100 items-center gap-2">
+          <span>🌐</span> Laddu AI — System Overview & Intelligence Profile
+        </h2>
+      </div>
+
+      <!-- Mode Selector & API Key -->
+      <div class="flex items-center gap-2 ml-auto">
+        <div class="flex items-center gap-1 bg-stone-900 p-1 rounded-xl border border-stone-800 text-[11px]">
+          <button onclick="setMode('balanced')" id="mode-balanced" class="mode-btn bg-amber-500 text-stone-950 font-bold px-2.5 py-1 rounded-lg transition">✨ Smart</button>
+          <button onclick="setMode('bitesized')" id="mode-bitesized" class="mode-btn text-stone-400 hover:text-stone-200 px-2.5 py-1 rounded-lg transition">🍬 Bite</button>
+          <button onclick="setMode('deep')" id="mode-deep" class="mode-btn text-stone-400 hover:text-stone-200 px-2.5 py-1 rounded-lg transition">🧠 Deep</button>
+        </div>
+        <button onclick="openKeyModal()" class="text-xs bg-amber-500/15 hover:bg-amber-500/25 text-amber-400 px-3 py-1.5 rounded-xl border border-amber-500/30 font-bold transition">
+          🔑 Key
+        </button>
+      </div>
+    </header>
+
+    <!-- ========================================== -->
+    <!-- TAB 1: AI ARCHITECTURE & INFO              -->
+    <!-- ========================================== -->
+    <div id="tab-overview" class="flex-1 overflow-y-auto p-4 sm:p-6 space-y-6 max-w-6xl w-full mx-auto">
+      
+      <!-- Hero Banner -->
+      <div class="glass-card rounded-3xl p-6 sm:p-8 relative overflow-hidden border border-amber-500/30">
+        <div class="max-w-3xl space-y-4 relative z-10">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-semibold">
+            <span>🟠 Flagship Neural Intelligence Engine</span>
+          </div>
+          <h1 class="text-2xl sm:text-4xl md:text-5xl font-extrabold tracking-tight leading-tight">
+            Meet <span class="gold-gradient-text">Laddu AI</span>.<br>
+            Sweet on the Outside, Razor-Sharp Inside.
+          </h1>
+          <p class="text-stone-300 text-xs sm:text-base leading-relaxed">
+            Built to surpass Nexora AI in speed, design, and versatility. **Laddu AI** unites a **Self-Healing Multi-Model Engine**, **Optical Vision Homework Scanning**, **Bi-Directional Voice**, and **Adaptive Flavor Modes** in one futuristic workspace.
+          </p>
+          <div class="flex flex-wrap gap-3 pt-2">
+            <button onclick="switchTab('chat')" class="px-5 py-3 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-stone-950 font-extrabold text-xs sm:text-sm shadow-lg shadow-amber-500/25 transition flex items-center gap-2">
+              ⚡ Enter Laddu AI Chat
+            </button>
+            <button onclick="switchTab('capabilities')" class="px-4 py-3 rounded-xl bg-stone-900 hover:bg-stone-800 text-stone-200 font-semibold text-xs sm:text-sm border border-stone-700 transition">
+              📊 Compare vs Nexora AI
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Live Telemetry Metrics Grid -->
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+        <div class="glass-card rounded-2xl p-4 sm:p-5 space-y-1">
+          <span class="text-[11px] text-stone-400 font-medium">Neural Architecture</span>
+          <div class="text-lg sm:text-2xl font-extrabold text-amber-400">Auto-Mesh v3.5</div>
+          <p class="text-[10px] text-emerald-400">✓ Dynamic Model Discovery</p>
+        </div>
+        <div class="glass-card rounded-2xl p-4 sm:p-5 space-y-1">
+          <span class="text-[11px] text-stone-400 font-medium">Memory Capacity</span>
+          <div class="text-lg sm:text-2xl font-extrabold text-stone-100 font-mono">1M+ Tokens</div>
+          <p class="text-[10px] text-amber-400">✓ Multi-Turn Context</p>
+        </div>
+        <div class="glass-card rounded-2xl p-4 sm:p-5 space-y-1">
+          <span class="text-[11px] text-stone-400 font-medium">Supported Domains</span>
+          <div class="text-lg sm:text-2xl font-extrabold text-orange-400">40+ Languages</div>
+          <p class="text-[10px] text-stone-400">✓ Code, Science & Business</p>
+        </div>
+        <div class="glass-card rounded-2xl p-4 sm:p-5 space-y-1">
+          <span class="text-[11px] text-stone-400 font-medium">Queries Solved</span>
+          <div id="stat-queries" class="text-lg sm:text-2xl font-extrabold text-emerald-400 font-mono">0</div>
+          <p class="text-[10px] text-emerald-400">✓ Zero-Downtime Fallback</p>
+        </div>
+      </div>
+
+      <!-- How Laddu AI Works Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="glass-card rounded-2xl p-5 space-y-2.5">
+          <div class="w-10 h-10 rounded-xl bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-xl">🧠</div>
+          <h4 class="font-bold text-sm sm:text-base text-amber-300">1. Adaptive "Flavor" Modes</h4>
+          <p class="text-xs text-stone-300 leading-relaxed">
+            Switch between **Smart Mode** (balanced), **Bite-Sized Mode** (quick bullet-point revision), and **Deep-Dive Mode** (step-by-step academic and coding mastery).
+          </p>
+        </div>
+        <div class="glass-card rounded-2xl p-5 space-y-2.5">
+          <div class="w-10 h-10 rounded-xl bg-orange-500/20 border border-orange-500/40 flex items-center justify-center text-xl">👁️</div>
+          <h4 class="font-bold text-sm sm:text-base text-orange-300">2. Vision & Homework Scanner</h4>
+          <p class="text-xs text-stone-300 leading-relaxed">
+            Upload photos of math problems, physics diagrams, or handwritten notes using the 📎 button and let Laddu AI solve them instantly.
+          </p>
+        </div>
+        <div class="glass-card rounded-2xl p-5 space-y-2.5">
+          <div class="w-10 h-10 rounded-xl bg-yellow-500/20 border border-yellow-500/40 flex items-center justify-center text-xl">🛡️</div>
+          <h4 class="font-bold text-sm sm:text-base text-yellow-300">3. Self-Healing Model Discovery</h4>
+          <p class="text-xs text-stone-300 leading-relaxed">
+            Automatically queries Google's `ListModels` service to detect which exact Gemini models your API key supports, plus a built-in keyless backup AI!
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- TAB 2: NEURAL CHAT WORKSPACE               -->
+    <!-- ========================================== -->
+    <div id="tab-chat" class="flex-1 flex flex-col overflow-hidden hidden">
+      <div id="chat-box" class="flex-1 overflow-y-auto p-4 md:p-6 space-y-5 max-w-4xl w-full mx-auto">
+        <!-- Welcome Card inside Chat -->
+        <div id="welcome-card" class="glass-card rounded-3xl p-5 sm:p-6 text-center space-y-4 my-2">
+          <div class="w-14 h-14 mx-auto rounded-2xl bg-gradient-to-tr from-orange-600 via-amber-500 to-yellow-300 flex items-center justify-center text-2xl shadow-xl shadow-amber-500/20">
+            🟠
+          </div>
+          <h3 class="text-xl sm:text-2xl font-extrabold gold-gradient-text">Namaste! Laddu AI is Ready.</h3>
+          <p class="text-xs text-stone-300 max-w-md mx-auto">
+            Click a starter prompt below or type any question—works with your Gemini API key or automatic backup mode!
+          </p>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-2 text-left">
+            <button onclick="quickPrompt('Write a modern, responsive product card in HTML and Tailwind CSS with hover animations.')" class="p-3 rounded-2xl bg-stone-900/90 hover:bg-stone-800 border border-stone-800 hover:border-amber-500/50 transition text-xs text-stone-300">
+              <span class="text-amber-400 font-bold block mb-1">💻 Web UI Generator</span>
+              Tailwind CSS animated card
+            </button>
+            <button onclick="quickPrompt('Explain Ohm\'s Law and Joule\'s Law of Heating with formulas and examples.')" class="p-3 rounded-2xl bg-stone-900/90 hover:bg-stone-800 border border-stone-800 hover:border-amber-500/50 transition text-xs text-stone-300">
+              <span class="text-amber-400 font-bold block mb-1">⚡ Physics Revision</span>
+              Ohm's Law & Joule's Heating
+            </button>
+            <button onclick="quickPrompt('Give me a 5-point marketing strategy to grow a premium coffee brand online.')" class="p-3 rounded-2xl bg-stone-900/90 hover:bg-stone-800 border border-stone-800 hover:border-amber-500/50 transition text-xs text-stone-300">
+              <span class="text-amber-400 font-bold block mb-1">🚀 CEO Brand Strategy</span>
+              5-point coffee brand growth plan
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Attached Image Preview Bar -->
+      <div id="image-preview-bar" class="hidden max-w-4xl mx-auto w-full px-4 py-2 flex items-center gap-3 bg-stone-900 border-t border-stone-800">
+        <span class="text-xs text-amber-400 font-semibold">📸 Image Ready:</span>
+        <img id="preview-thumb" src="" class="w-10 h-10 object-cover rounded-lg border border-amber-500/40" alt="Preview">
+        <button onclick="removeAttachedImage()" class="text-stone-400 hover:text-red-400 text-xs ml-auto font-semibold">❌ Remove</button>
+      </div>
+
+      <!-- Chat Input Bar -->
+      <footer class="p-3 sm:p-4 bg-stone-950/90 border-t border-stone-800/80">
+        <form id="chat-form" class="max-w-4xl mx-auto flex items-center gap-2">
+          <input type="file" id="image-input" accept="image/*" class="hidden" onchange="handleImageSelect(event)">
+          <button type="button" onclick="document.getElementById('image-input').click()" title="Upload Photo" class="p-3 text-stone-300 hover:text-amber-400 bg-stone-900 border border-stone-800 rounded-xl transition">📎</button>
+          <button type="button" id="mic-btn" onclick="toggleSpeechRecognition()" title="Voice Input" class="p-3 text-stone-300 hover:text-amber-400 bg-stone-900 border border-stone-800 rounded-xl transition">🎙️</button>
+          
+          <input 
+            id="user-input" 
+            type="text" 
+            placeholder="Ask Laddu AI anything..." 
+            autocomplete="off"
+            class="flex-1 bg-stone-900 border border-stone-800 rounded-xl px-4 py-3 text-sm text-stone-100 placeholder-stone-500 focus:outline-none focus:border-amber-500 transition"
+          />
+
+          <button 
+            type="submit" 
+            id="send-btn"
+            class="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-stone-950 px-5 py-3 rounded-xl font-extrabold text-sm transition flex items-center gap-1.5 shadow-lg shadow-amber-500/20 disabled:opacity-50"
+          >
+            <span>Send</span>
+            <span>✦</span>
+          </button>
+        </form>
+      </footer>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- TAB 3: CAPABILITIES & BENCHMARKS           -->
+    <!-- ========================================== -->
+    <div id="tab-capabilities" class="flex-1 p-4 sm:p-6 overflow-y-auto hidden max-w-6xl w-full mx-auto space-y-6">
+      <div class="glass-card rounded-3xl p-5 sm:p-6 space-y-4">
+        <h3 class="text-lg sm:text-xl font-extrabold gold-gradient-text">🏆 Why Laddu AI Beats Nexora AI</h3>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse text-xs sm:text-sm">
+            <thead>
+              <tr class="border-b border-stone-800 text-amber-400 bg-stone-900/60">
+                <th class="p-3">Feature</th>
+                <th class="p-3">🟠 Laddu AI (v3.5 Pro)</th>
+                <th class="p-3 text-stone-400">Nexora AI</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-stone-800/60">
+              <tr>
+                <td class="p-3 font-semibold">Auto Model Discovery (`ListModels`)</td>
+                <td class="p-3 text-emerald-400 font-bold">✓ Automatically detects valid models</td>
+                <td class="p-3 text-stone-400">✗ Fixed static endpoint</td>
+              </tr>
+              <tr>
+                <td class="p-3 font-semibold">Adaptive Flavor Modes</td>
+                <td class="p-3 text-emerald-400 font-bold">✓ Smart, Bite-Sized & Deep-Dive</td>
+                <td class="p-3 text-stone-400">✗ Single static mode</td>
+              </tr>
+              <tr>
+                <td class="p-3 font-semibold">Optical Vision Scanner</td>
+                <td class="p-3 text-emerald-400 font-bold">✓ Direct Image & Homework Upload</td>
+                <td class="p-3 text-stone-400">✗ Text-only</td>
+              </tr>
+              <tr>
+                <td class="p-3 font-semibold">Zero-Downtime Backup Engine</td>
+                <td class="p-3 text-emerald-400 font-bold">✓ Built-in Keyless Fallback AI</td>
+                <td class="p-3 text-stone-400">✗ Fails if key expires</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="glass-card rounded-2xl p-5 space-y-3">
+        <h4 class="font-bold text-sm text-amber-400">📡 Live Neural Telemetry Log</h4>
+        <div id="analytics-log" class="space-y-1.5 font-mono text-xs text-stone-400 bg-stone-950 p-4 rounded-xl border border-stone-800 max-h-48 overflow-y-auto">
+          <div class="text-emerald-400">[BOOT] Laddu AI v3.5 Self-Healing Engine Ready.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- TAB 4: CODE & TASK HUB                     -->
+    <!-- ========================================== -->
+    <div id="tab-playground" class="flex-1 p-4 sm:p-6 overflow-y-auto hidden max-w-6xl w-full mx-auto space-y-6">
+      <div class="glass-card rounded-3xl p-5 sm:p-6 space-y-4">
+        <h3 class="text-lg sm:text-xl font-extrabold text-amber-400">💻 Instant Task & Code Launchpad</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <button onclick="quickPrompt('Write a complete single-file HTML/Tailwind e-commerce product showcase page with a cart drawer.')" class="p-4 bg-stone-900/90 hover:bg-stone-800 border border-stone-800 hover:border-amber-500/40 rounded-2xl text-left space-y-1 transition">
+            <span class="text-sm font-bold text-amber-400 block">🛒 E-Commerce Storefront Generator</span>
+            <span class="text-xs text-stone-400 block">Generates a responsive HTML + Tailwind CSS storefront.</span>
+          </button>
+          <button onclick="quickPrompt('Create a high-yield revision cheat sheet for Class 10 Physics (Electricity) with all key formulas in a table.')" class="p-4 bg-stone-900/90 hover:bg-stone-800 border border-stone-800 hover:border-amber-500/40 rounded-2xl text-left space-y-1 transition">
+            <span class="text-sm font-bold text-amber-400 block">⚡ Rapid Exam Revision Sheet</span>
+            <span class="text-xs text-stone-400 block">Builds structured formula tables and key definitions.</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Custom API Key Modal -->
+  <div id="key-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 hidden p-4">
+    <div class="glass-card rounded-3xl p-6 max-w-md w-full space-y-4 border border-amber-500/40">
+      <div class="flex justify-between items-center">
+        <h3 class="text-lg font-extrabold text-amber-400">🔑 Gemini API Key Setup</h3>
+        <button onclick="closeKeyModal()" class="text-stone-400 hover:text-white text-sm">✕</button>
+      </div>
+      <p class="text-xs text-stone-300 leading-relaxed">
+        Paste your Google AI Studio API key below, or leave it blank to use Laddu AI's built-in free backup engine!
+      </p>
+      <input 
+        id="api-key-input" 
+        type="password" 
+        placeholder="AIzaSy... (or leave empty for free backup mode)" 
+        class="w-full bg-stone-950 border border-stone-700 rounded-xl px-4 py-3 text-sm text-amber-300 font-mono focus:outline-none focus:border-amber-500"
+      />
+      <div class="flex justify-end gap-2 pt-2">
+        <button onclick="closeKeyModal()" class="px-4 py-2 rounded-xl bg-stone-800 text-stone-300 text-xs font-semibold">Close</button>
+        <button onclick="saveApiKeyFromModal()" class="px-5 py-2 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 text-stone-950 font-extrabold text-xs">Save Key</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const chatBox = document.getElementById('chat-box');
+    const chatForm = document.getElementById('chat-form');
+    const userInput = document.getElementById('user-input');
+    const sendBtn = document.getElementById('send-btn');
+    const imageInput = document.getElementById('image-input');
+    const imagePreviewBar = document.getElementById('image-preview-bar');
+    const previewThumb = document.getElementById('preview-thumb');
+
+    let currentMode = 'balanced';
+    let conversationHistory = [];
+    let attachedImageBase64 = null;
+    let attachedImageMimeType = null;
+    let queryCount = 0;
+    let cachedValidModel = null;
+    window.assistantMessages = [];
+
+    const MODE_INSTRUCTIONS = {
+      balanced: "You are Laddu AI, a flagship next-generation AI system ('Sweet on the outside, sharp on the inside'). If asked who you are, proudly introduce yourself as Laddu AI v3.5. Solve tasks and answer questions clearly using clean Markdown (bolding, tables, bullet points, code blocks). Jump straight into the solution.",
+      bitesized: "You are Laddu AI in 'Bite-Sized Mode'. Give ultra-concise, high-impact answers using bullet points and bold keywords.",
+      deep: "You are Laddu AI in 'Deep-Dive Mode'. Provide comprehensive, step-by-step breakdowns, worked examples, and thorough structured explanations using Markdown headers and tables."
+    };
+
+    function switchTab(tab) {
+      ['overview', 'chat', 'capabilities', 'playground'].forEach(t => {
+        document.getElementById(`tab-${t}`).classList.add('hidden');
+        const navBtn = document.getElementById(`nav-${t}`);
+        if (navBtn) navBtn.className = "w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold text-stone-400 hover:text-stone-100 hover:bg-stone-900/60 transition";
+      });
+      document.getElementById(`tab-${tab}`).classList.remove('hidden');
+      const activeNav = document.getElementById(`nav-${tab}`);
+      if (activeNav) activeNav.className = "w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold bg-gradient-to-r from-amber-500/20 to-orange-500/5 text-amber-400 border border-amber-500/30 transition";
+    }
+
+    function setMode(mode) {
+      currentMode = mode;
+      document.querySelectorAll('.mode-btn').forEach(btn => {
+        btn.className = "mode-btn text-stone-400 hover:text-stone-200 px-2.5 py-1 rounded-lg transition";
+      });
+      document.getElementById(`mode-${mode}`).className = "mode-btn bg-amber-500 text-stone-950 font-bold px-2.5 py-1 rounded-lg transition";
+    }
+
+    function quickPrompt(text) {
+      switchTab('chat');
+      userInput.value = text;
+      chatForm.dispatchEvent(new Event('submit'));
+    }
+
+    function clearChat() {
+      conversationHistory = [];
+      chatBox.innerHTML = `<div class="text-center text-xs text-stone-400 my-4">✨ Session cleared! Laddu AI is ready. 🟠</div>`;
+    }
+
+    function openKeyModal() {
+      document.getElementById('api-key-input').value = localStorage.getItem('GEMINI_API_KEY') || '';
+      document.getElementById('key-modal').classList.remove('hidden');
+    }
+    function closeKeyModal() {
+      document.getElementById('key-modal').classList.add('hidden');
+    }
+    function saveApiKeyFromModal() {
+      const val = document.getElementById('api-key-input').value.trim();
+      localStorage.setItem('GEMINI_API_KEY', val);
+      cachedValidModel = null; // Reset model cache so it auto-detects with the new key
+      closeKeyModal();
+      alert(val ? '🟠 Gemini API Key saved! Auto-discovery active.' : '🟠 Switched to Free Keyless Backup AI Engine!');
+    }
+
+    function handleImageSelect(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        attachedImageBase64 = e.target.result.split(',')[1];
+        attachedImageMimeType = file.type;
+        previewThumb.src = e.target.result;
+        imagePreviewBar.classList.remove('hidden');
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function removeAttachedImage() {
+      attachedImageBase64 = null;
+      attachedImageMimeType = null;
+      imageInput.value = '';
+      imagePreviewBar.classList.add('hidden');
+    }
+
+    let recognition = null;
+    function toggleSpeechRecognition() {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (!SpeechRecognition) {
+        alert("Voice input works best in Google Chrome.");
+        return;
+      }
+      if (!recognition) {
+        recognition = new SpeechRecognition();
+        recognition.onstart = () => document.getElementById('mic-btn').classList.add('text-amber-400', 'border-amber-500');
+        recognition.onresult = (e) => userInput.value = e.results[0][0].transcript;
+        recognition.onend = () => document.getElementById('mic-btn').classList.remove('text-amber-400', 'border-amber-500');
+      }
+      try { recognition.start(); } catch(e) { recognition.stop(); }
+    }
+
+    function speakTextFromHistory(index) {
+      if (!window.speechSynthesis) return;
+      window.speechSynthesis.cancel();
+      const cleanText = (window.assistantMessages[index] || '').replace(/[*#_`\[\]]/g, '');
+      const utterance = new SpeechSynthesisUtterance(cleanText);
+      window.speechSynthesis.speak(utterance);
+    }
+
+    function postProcessMarkdown(htmlString) {
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(htmlString, 'text/html');
+      doc.querySelectorAll('pre').forEach((pre) => {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'code-container';
+        const copyBtn = document.createElement('button');
+        copyBtn.className = 'copy-code-btn';
+        copyBtn.innerText = '📋 Copy Code';
+        copyBtn.onclick = () => {
+          navigator.clipboard.writeText(pre.innerText);
+          copyBtn.innerText = '✨ Copied!';
+          setTimeout(() => copyBtn.innerText = '📋 Copy Code', 2000);
+        };
+        pre.parentNode.insertBefore(wrapper, pre);
+        wrapper.appendChild(pre);
+        wrapper.appendChild(copyBtn);
+      });
+      return doc.body.innerHTML;
+    }
+
+    function appendMessage(role, text, isId = null, rawHtml = false, msgIndex = null) {
+      const wrapper = document.createElement('div');
+      wrapper.className = `flex gap-3 items-start ${role === 'user' ? 'justify-end' : ''}`;
+      if (isId) wrapper.id = isId;
+
+      if (role === 'user') {
+        wrapper.innerHTML = `
+          <div class="bg-gradient-to-r from-amber-500 to-orange-500 text-stone-950 font-semibold rounded-2xl rounded-tr-none px-4 py-3 max-w-xl text-sm leading-relaxed shadow-md">
+            ${text}
+          </div>
+        `;
+      } else {
+        const parsedHtml = rawHtml ? text : postProcessMarkdown(marked.parse(text));
+        const speakBtn = (msgIndex !== null) ? `<button onclick="speakTextFromHistory(${msgIndex})" class="mt-3 text-xs text-stone-400 hover:text-amber-400 flex items-center gap-1 transition">🔊 Read Aloud</button>` : '';
+        wrapper.innerHTML = `
+          <div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-orange-600 via-amber-500 to-yellow-300 flex-shrink-0 flex items-center justify-center text-sm shadow">🟠</div>
+          <div class="prose glass-card rounded-2xl rounded-tl-none p-4 max-w-2xl text-sm leading-relaxed text-stone-200 overflow-x-auto">
+            ${parsedHtml}
+            ${speakBtn}
+          </div>
+        `;
+      }
+      chatBox.appendChild(wrapper);
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    // --- 1. Auto-Discover Valid Model via ListModels ---
+    async function discoverSupportedGeminiModel(apiKey) {
+      if (cachedValidModel) return cachedValidModel;
+      const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${apiKey}`);
+      const data = await res.json();
+      if (data.error) throw new Error(data.error.message);
+
+      const available = (data.models || []).filter(m =>
+        m.supportedGenerationMethods && m.supportedGenerationMethods.includes('generateContent') &&
+        m.name.includes('gemini') && !m.name.includes('embedding') && !m.name.includes('vision')
+      );
+
+      if (available.length === 0) throw new Error("No text generation models enabled on this API key.");
+
+      // Prefer flash or 2.5/2.0/1.5 models for speed
+      const preferred = available.find(m => m.name.includes('2.5-flash')) ||
+                        available.find(m => m.name.includes('2.0-flash')) ||
+                        available.find(m => m.name.includes('flash')) ||
+                        available[0];
+
+      cachedValidModel = preferred.name; // e.g., "models/gemini-2.0-flash"
+      return cachedValidModel;
+    }
+
+    // --- 2. Keyless Free Backup AI Engine (Never Fails!) ---
+    async function callBackupFreeAI(userPrompt) {
+      const res = await fetch('https://text.pollinations.ai/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          messages: [
+            { role: 'system', content: MODE_INSTRUCTIONS[currentMode] },
+            { role: 'user', content: userPrompt }
+          ],
+          model: 'openai'
+        })
+      });
+      const text = await res.text();
+      return { reply: text, modelUsed: 'Laddu-Cloud-Backup' };
+    }
+
+    // --- 3. Master AI Caller (Tries Gemini Auto-Discovery -> Falls back to Free Cloud AI) ---
+    async function generateSmartResponse(apiKey, payload, rawText) {
+      if (apiKey) {
+        try {
+          const modelPath = await discoverSupportedGeminiModel(apiKey);
+          const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/${modelPath}:generateContent?key=${apiKey}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+          const data = await res.json();
+          if (!data.error && data.candidates && data.candidates[0]?.content?.parts?.[0]?.text) {
+            return {
+              reply: data.candidates[0].content.parts[0].text,
+              modelUsed: modelPath.replace('models/', '')
+            };
+          }
+        } catch (err) {
+          console.warn("Gemini key fallback triggered:", err.message);
+        }
+      }
+      // If no key or Gemini key had an error, seamlessly use the free backup engine!
+      return await callBackupFreeAI(rawText || "Hello!");
+    }
+
+    chatForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const text = userInput.value.trim();
+      if (!text && !attachedImageBase64) return;
+
+      const apiKey = localStorage.getItem('GEMINI_API_KEY') || '';
+
+      document.getElementById('welcome-card')?.remove();
+
+      let displayUserText = text.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+      if (attachedImageBase64) {
+        displayUserText += `<br><img src="data:${attachedImageMimeType};base64,${attachedImageBase64}" class="mt-2 max-h-36 rounded-lg border border-stone-800">`;
+      }
+      appendMessage('user', displayUserText);
+      userInput.value = '';
+
+      let userParts = [];
+      if (text) userParts.push({ text: text });
+      if (attachedImageBase64) {
+        userParts.push({ inline_data: { mime_type: attachedImageMimeType, data: attachedImageBase64 } });
+      }
+
+      removeAttachedImage();
+      sendBtn.disabled = true;
+      conversationHistory.push({ role: "user", parts: userParts });
+
+      const loadingId = 'loading-' + Date.now();
+      appendMessage('model', '*Laddu AI is computing across neural nodes...* 🟠', loadingId, true);
+
+      const startTime = performance.now();
+
+      try {
+        const payload = {
+          system_instruction: { parts: [{ text: MODE_INSTRUCTIONS[currentMode] }] },
+          contents: conversationHistory,
+          generationConfig: { temperature: 0.7 }
+        };
+
+        const { reply, modelUsed } = await generateSmartResponse(apiKey, payload, text);
+        const latency = Math.round(performance.now() - startTime);
+        document.getElementById('sidebar-latency').innerText = latency + ' ms';
+        document.getElementById('active-model-badge').innerText = modelUsed;
+
+        document.getElementById(loadingId)?.remove();
+
+        const msgIdx = window.assistantMessages.length;
+        window.assistantMessages.push(reply);
+
+        appendMessage('model', reply, null, false, msgIdx);
+        conversationHistory.push({ role: "model", parts: [{ text: reply }] });
+
+        queryCount++;
+        document.getElementById('stat-queries').innerText = queryCount;
+        const logDiv = document.getElementById('analytics-log');
+        logDiv.innerHTML += `<div class="text-amber-300">[OK] Query #${queryCount} solved in ${latency}ms via ${modelUsed}</div>`;
+      } catch (error) {
+        document.getElementById(loadingId)?.remove();
+        appendMessage('model', `**Connection Error:** Please check your internet connection and try again.`);
+        conversationHistory.pop();
+      } finally {
+        sendBtn.disabled = false;
+        userInput.focus();
+      }
+    });
+  </script>
+</body>
+</html>
